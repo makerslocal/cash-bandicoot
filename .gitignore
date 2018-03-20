@@ -1,0 +1,6 @@
+# Virtual environments
+.env/
+.tox/
+
+# Workspace files
+.vscode/
