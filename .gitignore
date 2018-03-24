@@ -10,3 +10,8 @@ __pycache__/
 
 # Workspace files
 .vscode/
+.*.swp
+
+# configs
+config.json
+
