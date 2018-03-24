@@ -1,13 +1,13 @@
 from flask import Flask, jsonify, request
 import json
-import psycopg2
+import psycopg2, psycopg2.extras
 
 app = Flask(__name__)
 
 with open('config.json', 'r') as f:
     config = json.loads(f.read())
 
-db = psycopg2.connect(host=config['database']['host'], database=config['database']['name'], user=config['database']['role'], password=config['database']['password'])
+db = psycopg2.connect(host=config['database']['host'], database=config['database']['name'], user=config['database']['role'], password=config['database']['password'], cursor_factory=psycopg2.extras.RealDictCursor)
 
 users = {
     1: {
@@ -21,7 +21,12 @@ users = {
 
 @app.route("/users")
 def get_users():
-    return jsonify(users)
+    with db.cursor() as cur:
+        cur.execute('''
+            select username, balance
+            from person
+        ''')
+        return jsonify(cur.fetchall())
 
 
 @app.route("/users", methods=['POST'])
