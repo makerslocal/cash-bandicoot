@@ -1,0 +1,8 @@
+{
+    "database": {
+        "host":"iot",
+        "name":"cashbandicoot",
+        "role":"nobody",
+        "password":"topsecret"
+    }
+}

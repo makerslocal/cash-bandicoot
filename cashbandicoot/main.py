@@ -1,5 +1,13 @@
 from flask import Flask, jsonify, request
+import json
+import psycopg2
+
 app = Flask(__name__)
+
+with open('config.json', 'r') as f:
+    config = json.loads(f.read())
+
+db = psycopg2.connect(host=config['database']['host'], database=config['database']['name'], user=config['database']['role'], password=config['database']['password'])
 
 users = {
     1: {
