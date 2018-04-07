@@ -63,6 +63,7 @@ def get_user(username=None):
 def add_transaction():
     username = request.form['username']
     amount = float(request.form['amount'])
+    service = get_service(request.args.get('token'))
 
     with db.cursor() as cur:
         #In psycopg2, "with" clauses like this will automatically BEGIN TRANSACTION.
@@ -81,11 +82,11 @@ def add_transaction():
         cur.execute('''
             insert into transaction(service_id, person_id, amount)
             values(
-                1,
-                (select id from person where username = 'hfuller'),
-                0.50
+                %s,
+                (select id from person where username = %s),
+                %s
             )
-        ''', [username])
+        ''', [service['id'], username, amount])
 
         #Now we're done.
         db.commit()
