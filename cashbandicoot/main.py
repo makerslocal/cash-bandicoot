@@ -23,12 +23,12 @@ def require_token(fn):
 def get_service(token):
     with db.cursor() as cur:
         cur.execute('''
-            select name
+            select id, name
             from service
             where crypt(%s, hash) = hash
         ''', [token])
         try:
-            return cur.fetchone()['name']
+            return cur.fetchone()
         except TypeError:
             return None
 
